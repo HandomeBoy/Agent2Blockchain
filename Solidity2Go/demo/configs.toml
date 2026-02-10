@@ -1,0 +1,64 @@
+[Network]
+Type="channel"
+CAFile="ca.crt"
+Cert="sdk.crt"
+Key="sdk.key"
+[[Network.Connection]]
+NodeURL="192.168.126.144:20200"
+GroupID=1
+# [[Network.Connection]]
+# NodeURL="127.0.0.1:20200"
+# GroupID=2
+
+[Consumer]
+KeyFile="account/Consumer_key_0x0b35f558d3ad35f5fc7a430a784a3bc06c8cff36.pem"
+
+[Grower]
+KeyFile="account/Grower_key_0x3b6267e282741092a740382ce0f2e89c6c1e2fab.pem"
+
+[Logistic]
+KeyFile="account/Logistic_key_0x7cc9da5081981a21107a20e30da23d1529ce266f.pem"
+
+[Factory]
+KeyFile="account/Factory_key_0xdb8b35c5f720b6aaf5ff80c79cf9442c1038a947.pem"
+
+[Expert]
+KeyFile="account/Expert_key_0x762267ee97bb2f1700cdff8bb849e9ab3b17bd8d.pem"
+
+[Chain]
+ChainID=1
+SMCrypto=false
+
+# Database configuration
+[Database]
+host = "127.0.0.1"
+port = "3306"
+user = "root"
+password = "123456"
+dbname = "tomato"
+
+# Blockchain configuration
+[Blockchain]
+node_url = "192.168.126.144:20200"
+group_id = 1
+chain_id = 1
+contract_address = "0x144f233c014f5a0f04458b6e3e1972a6d23b20f0"
+private_key = "./account/Grower_key_0x3b6267e282741092a740382ce0f2e89c6c1e2fab.pem"  # PEM文件路径
+ca_file = "./ca.crt"
+key_file = "./sdk.key"
+cert_file = "./sdk.crt"
+
+#tomato_id : TOMATO_e8fb3e1a0e31b5dcec343c5a4c05ccd93fadfe0a0e2d101aff1451dfeefad8cc
+#user_addr : 0x3b6267e282741092a740382ce0f2e89c6c1e2fab
+#contract_addr : 0xa24002e611a8b00c0518593e88a767130564a948
+
+#调用detect接口时先执行将图片存入数据库的操作。
+#地址为：
+[tomato.harvest.image]
+path = "D:/img/harvest/"
+
+[tomato.sampling.image]
+path = "D:/img/sampling/"
+
+[tomato.agent.img]
+path = "D:/img/agentSource/"

@@ -1,0 +1,18 @@
+spring:
+  cloud:
+    nacos:
+      config:
+        server-addr: ${NACOS_SERVER_ADDR:192.1.2.239:8848}
+        file-extension: ${NACOS_FILE_EXT:yaml}
+        name: ${spring.application.name}
+        namespace: ${NACOS_NAMESPACE:b45babbb-b12f-47b8-aa22-376d713fc37c}
+        enabled: true
+        shared-configs:
+          - data-id: redisson.yaml
+        username: ${NACOS_SERVER_USERNAME:nacos}
+        password: ${NACOS_SERVER_PASSWORD:nacos}
+      discovery:
+        server-addr: ${NACOS_SERVER_ADDR:192.1.2.239:8848}
+        namespace: ${NACOS_NAMESPACE:b45babbb-b12f-47b8-aa22-376d713fc37c}
+        username: ${NACOS_SERVER_USERNAME:nacos}
+        password: ${NACOS_SERVER_PASSWORD:nacos}

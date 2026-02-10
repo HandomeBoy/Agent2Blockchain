@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+    <contextName>${HOSTNAME}</contextName>
+    <include resource="org/springframework/boot/logging/logback/defaults.xml"/>
+
+    <timestamp key="startTime" datePattern="yyyyMMdd" timeReference="contextBirth"/>
+    <springProperty scope="context" name="APP_NAME" source="spring.application.name"/>
+    <property name="LOG_PATH" value="${user.home}/${APP_NAME}/logs/${startTime}"/>
+    <property name="LOG_FILE" value="${LOG_PATH}/application.log"/>
+    <property name="PATTERN"
+              value="%d{yyyy-MM-dd HH:mm:ss.SSS}|${APP_NAME}|%clr(%5p)|%X{tid}|${PID:- }|%t|%-40.40logger{39}|%m%n${LOG_EXCEPTION_CONVERSION_WORD:-%wEx}"/>
+    <property name="SKY_PATTERN"
+              value="%d{yyyy-MM-dd HH:mm:ss.SSS}|${APP_NAME}|%5p|%X{tid}|${PID:- }|%t|%-40.40logger{39}|%m%n${LOG_EXCEPTION_CONVERSION_WORD:-%wEx}"/>
+
+    <appender name="APPLICATION" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${LOG_PATH}/application.${HOSTNAME}.log</file>
+        <encoder>
+            <pattern>${PATTERN}</pattern>
+        </encoder>
+<!--        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">-->
+<!--            &lt;!&ndash; hourly rollover &ndash;&gt;-->
+<!--            <fileNamePattern>${LOG_PATH}/application.%d{yyyy-MM-dd-HH}.${HOSTNAME}.gz</fileNamePattern>-->
+<!--            &lt;!&ndash; keep 72 hours worth of history &ndash;&gt;-->
+<!--            <maxHistory>72</maxHistory>-->
+<!--        </rollingPolicy>-->
+
+        <!-- 大小+时间混合滚动策略 -->
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <!-- 归档文件命名（%i 表示同一时间周期内的序号） -->
+            <fileNamePattern>${LOG_PATH}/application.%d{yyyy-MM-dd}.%i.${HOSTNAME}.gz</fileNamePattern>
+            <!-- 单个文件最大 size -->
+            <maxFileSize>1024MB</maxFileSize>
+            <!-- 保留 30 天日志 -->
+            <maxHistory>30</maxHistory>
+            <!-- 总日志大小上限 5GB -->
+            <totalSizeCap>10GB</totalSizeCap>
+        </rollingPolicy>
+    </appender>
+
+    <appender name="SQL" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${LOG_PATH}/sql.${HOSTNAME}.log</file>
+        <encoder>
+            <pattern>${PATTERN}</pattern>
+        </encoder>
+<!--        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">-->
+<!--            <fileNamePattern>${LOG_PATH}/sql.%d{yyyy-MM-dd-HH}.${HOSTNAME}.gz</fileNamePattern>-->
+<!--            &lt;!&ndash; 超过72小时的备份文件会被删除 &ndash;&gt;-->
+<!--            <maxHistory>72</maxHistory>-->
+<!--        </rollingPolicy>-->
+        <!-- 大小+时间混合滚动策略 -->
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <!-- 归档文件命名（%i 表示同一时间周期内的序号） -->
+            <fileNamePattern>${LOG_PATH}/sql.%d{yyyy-MM-dd}.%i.${HOSTNAME}.gz</fileNamePattern>
+            <!-- 单个文件最大 size -->
+            <maxFileSize>1024MB</maxFileSize>
+            <!-- 保留 7 天日志 -->
+            <maxHistory>30</maxHistory>
+            <!-- 总日志大小上限 5GB -->
+            <totalSizeCap>10GB</totalSizeCap>
+        </rollingPolicy>
+    </appender>
+
+    <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder class="ch.qos.logback.core.encoder.LayoutWrappingEncoder">
+            <layout class="org.apache.skywalking.apm.toolkit.log.logback.v1.x.mdc.TraceIdMDCPatternLogbackLayout">
+                <Pattern>${PATTERN}</Pattern>
+            </layout>
+        </encoder>
+    </appender>
+
+    <!--  skywalking采集日志  -->
+    <appender name="SKYWALKING" class="org.apache.skywalking.apm.toolkit.log.logback.v1.x.log.GRPCLogClientAppender">
+        <encoder class="ch.qos.logback.core.encoder.LayoutWrappingEncoder">
+            <layout class="org.apache.skywalking.apm.toolkit.log.logback.v1.x.mdc.TraceIdMDCPatternLogbackLayout">
+                <pattern>${SKY_PATTERN}</pattern>
+            </layout>
+        </encoder>
+    </appender>
+
+
+    <springProfile name="prod">
+        <root level="INFO">
+            <appender-ref ref="APPLICATION"/>
+            <appender-ref ref="SKYWALKING"/>
+            <appender-ref ref="CONSOLE"/>
+        </root>
+    </springProfile>
+
+
+    <springProfile name="test,staging,gray">
+        <root level="INFO">
+            <appender-ref ref="APPLICATION"/>
+            <appender-ref ref="SKYWALKING"/>
+            <appender-ref ref="CONSOLE"/>
+        </root>
+    </springProfile>
+
+    <springProfile name="test,dev,local,gray,prod">
+        <root level="info">
+            <appender-ref ref="CONSOLE"/>
+            <appender-ref ref="APPLICATION"/>
+            <appender-ref ref="SKYWALKING"/>
+        </root>
+    </springProfile>
+
+    <!-- 业务统计日志 -->
+    <logger name= "com.linker.log.aop.LogMetricHandler" level="TRACE" />
+
+</configuration>

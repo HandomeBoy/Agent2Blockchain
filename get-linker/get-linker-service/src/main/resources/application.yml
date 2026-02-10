@@ -1,0 +1,36 @@
+coze:
+  http:
+    createConversation: https://api.coze.cn/v1/conversation/create
+    createMessage: https://api.coze.cn/v1/conversation/message/create
+    uploadFile: https://api.coze.cn/v1/files/upload
+    getFile: https://api.coze.cn/v1/files/retrieve
+    createChat: https://api.coze.cn/v3/chat
+    getChatMessageList: https://api.coze.cn/v3/chat/message/list
+    getRetrieveChat: https://api.coze.cn/v3/chat/retrieve
+  create:
+    agent_id: "7592504317631430708"
+  bearer:
+    personal: "pat_lAu8CeRz1vf4lA1xyagsJpJ6PzBFsuCJZU8ZNIZ2z7oIN8Abgb7ZcXzLB34KFB0b"
+
+spring:
+  datasource:
+    url: jdbc:mysql://localhost:3306/tomato?useUnicode=true&characterEncoding=utf8&serverTimezone=UTC&allowPublicKeyRetrieval=true
+    username: root
+    password: 123456
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+mybatis-plus:
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+    jdbc-type-for-null: VARCHAR
+
+tomato:
+  harvest:
+    image:
+      path: "D:/img/harvest/"
+  sampling:
+    image:
+      path: "D:/img/sampling/"
+  agent:
+    img:
+      path: "D:/img/agentSource/"

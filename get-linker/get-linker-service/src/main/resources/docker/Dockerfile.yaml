@@ -1,0 +1,20 @@
+#FROM hbt.linker.cc/base/openjdk:8u302-jdk-alpine
+FROM openjdk:8u92-jdk-alpine
+
+RUN mkdir -p /usr/share/zoneinfo/Asia
+ADD Shanghai /usr/share/zoneinfo/Asia
+ENV TZ=Asia/Shanghai
+## 创建本地和容器的连接
+RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
+
+WORKDIR /usr/local/java
+
+COPY ./*.jar /usr/local/java/
+
+ADD apache-skywalking-java-agent-8.10.0.tgz /usr/local/java/
+
+EXPOSE 8080
+
+RUN chmod +x /usr/local/java/*.jar && chmod +x /usr/local/java/skywalking-agent/skywalking-agent.jar
+
+CMD java -javaagent:/usr/local/java/skywalking-agent/skywalking-agent.jar -Dskywalking.agent.service_name=${JAR_NAME} -Dskywalking.collector.backend_service=${SKYWALKING_SERVICE} $JAVA_OPTS -jar -Dspring.profiles.active=${SPRING_PROFILES_ACTIVE} ${JAR_NAME}.jar

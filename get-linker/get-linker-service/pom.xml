@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <artifactId>get-linker</artifactId>
+        <groupId>com.linker.tproject</groupId>
+        <version>1.0.0-SNAPSHOT</version>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+
+    <artifactId>get-linker-service</artifactId>
+
+    <dependencies>
+        <dependency>
+            <groupId>com.linker.tproject</groupId>
+            <artifactId>get-linker-api</artifactId>
+        </dependency>
+        <!-- 认证接口依赖 -->
+        <dependency>
+            <groupId>com.linker</groupId>
+            <artifactId>auth-starter</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.linker</groupId>
+            <artifactId>web-starter</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.linker</groupId>
+            <artifactId>redis-starter</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.linker</groupId>
+            <artifactId>skywalking-starter</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.linker</groupId>
+            <artifactId>log-metric-starter</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.linker</groupId>
+            <artifactId>rocketmq-starter</artifactId>
+        </dependency>
+
+<!--        <dependency>-->
+<!--            <groupId>com.linker</groupId>-->
+<!--            <artifactId>mybatis-plus-starter</artifactId>-->
+<!--        </dependency>-->
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>druid-spring-boot-starter</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.linker</groupId>
+            <artifactId>core-utils</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>io.springfox</groupId>
+            <artifactId>springfox-swagger2</artifactId>
+            <version>2.10.5</version>
+        </dependency>
+
+        <dependency>
+            <groupId>io.springfox</groupId>
+            <artifactId>springfox-swagger-ui</artifactId>
+            <version>2.10.5</version>
+        </dependency>
+
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+            <version>8.0.33</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.baomidou</groupId>
+            <artifactId>mybatis-plus-boot-starter</artifactId>
+            <version>3.5.7</version> <!-- 推荐使用最新稳定版 -->
+        </dependency>
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+            <version>8.0.33</version>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <defaultGoal>compile</defaultGoal>
+        <finalName>linker-template-project-service</finalName>
+        <plugins>
+            <!-- 跳过deploy -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-deploy-plugin</artifactId>
+                <configuration>
+                    <skip>true</skip>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>repackage</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+
+</project>

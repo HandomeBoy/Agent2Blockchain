@@ -1,0 +1,115 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: omi-intel
+  labels:
+    service: omi-server
+  name: omi-server
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      service: omi-server
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 25%
+  template:
+    metadata:
+      labels:
+        service: omi-server
+        network/soco: "true"
+        type: app
+    spec:
+      containers:
+        - args:
+#          env:
+#            - name: JAR_NAME
+#              value: omi-server
+#            - name: JAVA_OPTS
+#              value: "-Xms1g -Xmx1g -XX:+UseG1GC
+#                  -XX:+PrintGCDetails
+#                  -XX:+PrintGCDateStamps
+#                  -Xloggc:/usr/local/java/logs/omi-server_gc.log
+#                  -XX:ErrorFile=/usr/local/java/logs/omi-server_hs_err_pid.log
+#                  -XX:+HeapDumpOnOutOfMemoryError
+#                  -XX:HeapDumpPath=/usr/local/java/logs/omi-server_jvmlog"
+#            - name: SKYWALKING_SERVICE
+#              valueFrom:
+#                configMapKeyRef:
+#                  name: omi-server-config
+#                  key: SKYWALKING_SERVICE
+#            - name: NACOS_SERVER_ADDR
+#              valueFrom:
+#                configMapKeyRef:
+#                  name: omi-server-config
+#                  key: NACOS_SERVER_ADDR
+#            - name: NACOS_FILE_EXT
+#              valueFrom:
+#                configMapKeyRef:
+#                  name: omi-server-config
+#                  key: NACOS_FILE_EXT
+#            - name: NACOS_NAMESPACE
+#              valueFrom:
+#                configMapKeyRef:
+#                  name: omi-server-config
+#                  key: NACOS_NAMESPACE
+#            - name: SPRING_PROFILES_ACTIVE
+#              valueFrom:
+#                configMapKeyRef:
+#                  name: omi-server-config
+#                  key: SPRING_PROFILES_ACTIVE
+          #image: hbt.linker.cc/om-intel/omi-server:3.0.3.1
+          envFrom:
+            - configMapRef:
+                name: omi-server-config
+          image: hbt.linker.cc/om-intel/omi-server:3.1.0-rc5
+          imagePullPolicy: "IfNotPresent"
+          name: omi-server
+          ports:
+            - containerPort: 8080
+          readinessProbe:
+            initialDelaySeconds: 40
+            timeoutSeconds: 10
+            periodSeconds: 15
+            failureThreshold: 3
+            successThreshold: 1
+            httpGet:
+              path: /omiserver/health
+              port: 8080
+              scheme: HTTP
+          resources: {}
+          volumeMounts:
+            - mountPath: "/usr/local/java/logs"
+              name: omi-intel-pv-storage
+            - mountPath: "/usr/local/java/core"
+              name: omi-intel-pv-storage
+      imagePullSecrets:
+        - name: linker-secret
+      restartPolicy: Always
+      volumes:
+        - name: omi-intel-pv-storage
+          persistentVolumeClaim:
+            claimName: omi-intel-pvc
+status: {}
+
+---
+#根据实际需要看是否需要配置service
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: omi-intel
+  labels:
+    service: omi-server
+  name: omi-server
+spec:
+  ports:
+    - name: "8080"
+      port: 8080
+      targetPort: 8080
+      nodePort: 30180
+      protocol: TCP
+  selector:
+    service: omi-server
+  type: NodePort

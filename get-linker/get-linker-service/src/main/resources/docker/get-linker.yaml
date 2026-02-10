@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: omi-server-config
+  namespace: omi-intel
+data:
+  SPRING_PROFILES_ACTIVE: test
+  SKYWALKING_SERVICE: 192.1.2.239:11800
+  NACOS_SERVER_ADDR: 192.1.2.239:8848
+  NACOS_FILE_EXT: yaml
+  NACOS_NAMESPACE: 029380b4-8955-4bff-8fa7-cc56562944d6
+  JAR_NAME: omi-server
+  JAVA_OPTS: -Xms1g -Xmx1g -XX:+UseG1GC -XX:+PrintGCDetails -XX:+PrintGCDateStamps -Xloggc:/usr/local/java/logs/omi-server_gc.log -XX:ErrorFile=/usr/local/java/logs/omi-server_hs_err_pid.log -XX:+HeapDumpOnOutOfMemoryError -XX:HeapDumpPath=/usr/local/java/logs/omi-server_jvmlog

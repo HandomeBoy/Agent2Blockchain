@@ -16,7 +16,7 @@
 > 3. 创建一个tomato数据库，按照get-linker中README文件创建数据表的代码创建Mysql数据表。
 
 ### 部署步骤
-> 1. 除vue文件外,其他两个文件直接下载即可;vue文件需要创建后自行替换src。
+> 1. 除vue文件外,其他两个文件直接下载即可;vue文件需要创建后自行替换src目录。
 > 2. Solidity2Go:
 >      在节点控制器中创建configs.toml文件中规定的角色,导入.pem文件,修改Solidity2Go项目中的configs.toml文件中的配置,将所有的文件名和地址改为实际的文件和地址。
 >      导入ca.crt,sdk.crt,sdk.key,TomatoTraceable.abi文件。

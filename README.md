@@ -26,4 +26,10 @@
 > 4. get-linker:   
 >      在本机上创建application.yml文件中tomato下的三个目录,收获时期的图片存储在harvest对应的目录中,加工时期的图片存储在sampling对应的目录中,并将图片命名为生成的tomato_id。   
 > 5. 三个服务全部启动后,通过下图的功能获取tomato_id。<img width="1919" height="1030" alt="image" src="https://github.com/user-attachments/assets/6d6ab203-7f57-4227-a51a-419982cefafb" />
->    将对应的图片存储在对应的路径下，改成正确的命名。之后,专家节点执行检测功能时会读取对应的文件。
+>    将对应的图片存储在对应的路径下，改成正确的命名。之后,专家节点执行检测功能时会读取对应的文件进行检测。
+>
+    
+## 结果展示
+1. 产地、日期等基础信息与传统Fisco Bcos区块链上链方式一致;番茄id由系统生成,并作为番茄批次的唯一标识符。 
+2. 由智能体做出质量检测并自动上链,如图所示。 
+> <img width="1337" height="891" alt="image" src="https://github.com/user-attachments/assets/6d07d05a-81f9-4fc4-b661-aaf67f306937" />
